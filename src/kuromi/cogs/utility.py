@@ -11,6 +11,40 @@ class Utility(commands.Cog):
         self.start_time = time.monotonic()
 
     @discord.slash_command(
+        name="member-count",
+        description="Check the server's member count",
+        guild_only=True,
+    )
+    async def member_count(
+        self,
+        ctx: discord.ApplicationContext,
+    ) -> None:
+        members = ctx.guild.members
+        member_count = len(members)
+        bot_count = 0
+        for member in members:
+            if member.bot:
+                bot_count += 1
+        user_count = member_count - bot_count
+        message = "Counting...\n"
+        message += str(member_count)
+        if member_count != 1:
+            message += " members\n"
+        else:
+            message += " member\n"
+        message += str(user_count)
+        if user_count != 1:
+            message += " users\n"
+        else:
+            message += " user\n"
+        message += str(bot_count)
+        if bot_count != 1:
+            message += " bots"
+        else:
+            message += " bot"
+        await ctx.respond(message)
+
+    @discord.slash_command(
         name="ping",
         description="Check the bot's ping",
     )
