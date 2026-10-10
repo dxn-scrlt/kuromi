@@ -11,6 +11,26 @@ class Utility(commands.Cog):
         self.start_time = time.monotonic()
 
     @discord.slash_command(
+        name="avatar",
+        description="Display a user's global avatar",
+    )
+    @discord.option(
+        "user",
+        discord.User,
+        description="The user whose avatar to display",
+    )
+    async def avatar(
+        self,
+        ctx: discord.ApplicationContext,
+        user: discord.User,
+    ) -> None:
+        avatar = user.avatar
+        if avatar is None:
+            avatar = user.display_avatar
+        avatar_url = avatar.url
+        await ctx.respond(avatar_url)
+
+    @discord.slash_command(
         name="member-count",
         description="Check the server's member count",
         guild_only=True,
