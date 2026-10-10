@@ -76,6 +76,27 @@ class Utility(commands.Cog):
         await ctx.respond(f"Pong! {latency}ms")
 
     @discord.slash_command(
+        name="server-avatar",
+        description="Display a member's server avatar",
+        guild_only=True,
+    )
+    @discord.option(
+        "member",
+        discord.Member,
+        description="The member whose avatar to display",
+    )
+    async def server_avatar(
+        self,
+        ctx: discord.ApplicationContext,
+        member: discord.Member,
+    ) -> None:
+        avatar = member.guild_avatar
+        if avatar is None:
+            avatar = member.display_avatar
+        avatar_url = avatar.url
+        await ctx.respond(avatar_url)
+
+    @discord.slash_command(
         name="uptime",
         description="Check the bot's uptime",
     )
